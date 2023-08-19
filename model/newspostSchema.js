@@ -14,6 +14,10 @@ const Schema = mongoose.Schema(
       type: String,
       required: true,
     },
+    youtube:{
+        type: String,
+        required: true,
+    }
   },
   { timestamps: true }
 );
