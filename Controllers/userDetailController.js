@@ -1,8 +1,9 @@
 import badRequest from "../error/badRequest.js";
 import userDetail from "../model/userDetailSchema.js";
+
 const getUserDetail = async (req, res, next) => {
   try {
-    const data = await userDetail.find({ _id: req.params.id });
+    const data = await userDetail.find({ user: req.params.id });
     if (!data) throw new badRequest("User Detail Not Found");
     res.status(200).json(data);
   } catch (error) {
@@ -30,7 +31,7 @@ const postUserDetail = async (req, res, next) => {
 const patchUserDetail = async (req, res, next) => {
   try {
     const data = await userDetail.findByIdAndUpdate(
-      { _id: req.params.id },
+      { user: req.params.id },
       req.body,
       { new: true }
     );
@@ -41,13 +42,12 @@ const patchUserDetail = async (req, res, next) => {
   }
 };
 
-
 // IF YOU WANT TO DELETE THE USER DETAIL THEN USE THIS CODE
 
 const deleteUserDetail = async (req, res, next) => {
   try {
     const data = await userDetail.findByIdAndDelete(
-      { _id: req.params.id },
+      { user: req.params.id },
       req.body,
       { new: true }
     );

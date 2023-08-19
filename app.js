@@ -5,6 +5,7 @@ import errorHandler from "./Middleware/error-handler.js";
 import cors from "cors";
 import authrouter from "./router/authRouter.js";
 import UserDetailrouter from "./router/userDetailRouter.js";
+import newspostrouter from "./router/newspostRouter.js";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
@@ -16,6 +17,7 @@ app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true }));
 app.use("/api/v1/auth", authrouter);
 app.use("/api/v1/user", UserDetailrouter);
+app.use("/api/v1/News", newspostrouter);
 app.use(errorHandler);
 
 cloudinary.config({
