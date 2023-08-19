@@ -1,10 +1,14 @@
 import Express from "express";
-import {authSignup,authlogin} from "../Controllers/authController.js";
+import {
+  authSignup,
+  authlogin,
+  authpasswordreset,
+} from "../Controllers/authController.js";
 
 const authrouter = Express.Router();
 
-authrouter.route("/Signup").post(authSignup);
+authrouter.route("/signup").post(authSignup);
 authrouter.route("/login").post(authlogin);
-
+authrouter.route("/password-reset").patch(authpasswordreset);
 
 export default authrouter;

@@ -40,4 +40,29 @@ const authlogin = async (req, res, next) => {
   }
 };
 
-export { authSignup, authlogin };
+const authpasswordreset = async (req, res, next) => {
+  try {
+    if (!req.body.email && !req.body.password && !req.body.newPassword) {
+      throw new badRequest("Email and Password is required");
+    }
+    const User = await authSchema.findOne({ email: req.body.email });
+    if (!User) {
+      throw new badRequest("User not found");
+    }
+    const isMatch = await comparePassword(req.body.password, User.password);
+    if (!isMatch) {
+      throw new badRequest("Password is not correct");
+    }
+    const newpassword = await authSchema.findOneAndUpdate(
+      { email: req.body.email },
+      { password: req.body.newPassword },
+      { new: true }
+    );
+    newpassword.save();
+    res.status(StatusCodes.OK).json({ message: "Password Updated" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { authSignup, authlogin, authpasswordreset };

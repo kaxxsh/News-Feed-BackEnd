@@ -17,4 +17,4 @@ const verifyUser = (...role) => {
   };
 };
 
-export { verifyUser };
+export default verifyUser ;
