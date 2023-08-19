@@ -66,6 +66,6 @@ const schema = mongoose.Schema(
   { timestamps: true }
 );
 
-const userDetailSchema = mongoose.model("userDetail", schema);
+const userDetail = mongoose.model("userDetail", schema);
 
-export default userDetailSchema;
+export default userDetail;

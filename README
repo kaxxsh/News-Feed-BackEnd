@@ -1,5 +1,15 @@
 url
 
-/api/v1/auth/signup    ---- > Signup
-/api/v1/auth/login     -----> Login
-/api/v1/auth/password-reset     -----> Login
+/api/v1/auth/signup             -----> Signup
+/api/v1/auth/login              -----> Login
+/api/v1/auth/password-reset     -----> passwordreset
+
+
+/api/v1/user/:id   -----> GetUserDetails
+/api/v1/user/:id   -----> CreateUserDetails
+/api/v1/user/:id   -----> UpdateUserDetails
+/api/v1/user/:id   -----> DeleteUserDetails
+
+
+
+
