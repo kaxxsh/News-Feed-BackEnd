@@ -1,11 +1,14 @@
 import newspost from "../model/newspostSchema.js";
 import badRequest from "../error/badRequest.js";
+import { StatusCodes } from "http-status-codes";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 
 const getallNewsPosts = async (req, res, next) => {
   try {
     const data = await newspost.find();
     if (!data) throw new badRequest("No data found");
-    res.status(200).json({ success: true, msg: "Show all news posts" });
+    res.status(StatusCodes.OK).json(data);
   } catch (error) {
     next(error);
   }
@@ -15,7 +18,7 @@ const getNewsPost = async (req, res, next) => {
   try {
     const data = await newspost.find({ user: req.params.id });
     if (!data) throw new badRequest("No data found");
-    res.status(200).json({ success: true, msg: "Show all news posts" });
+    res.status(StatusCodes.OK).json(data);
   } catch (error) {
     next(error);
   }
@@ -23,14 +26,14 @@ const getNewsPost = async (req, res, next) => {
 
 const createNewsPost = async (req, res, next) => {
   if (req.files) {
-    var src = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
+    var src = await cloudinary.uploader.upload(req.files.postimg.tempFilePath, {
       folder: "Newspostimage",
     });
-    fs.unlinkSync(req.files.image.tempFilePath);
+    fs.unlinkSync(req.files.postimg.tempFilePath);
   }
   try {
-    req.body.user = req.user.payload;
-    req.body.image = src.secure_url;
+    req.body.user = req.user.payload.id;
+    req.body.postimg = src.secure_url;
     const data = await newspost.create(req.body);
     res.status(StatusCodes.OK).json(data);
   } catch (error) {
@@ -40,7 +43,7 @@ const createNewsPost = async (req, res, next) => {
 
 const updateNewsPost = async (req, res, next) => {
   try {
-    const data = await newspost.findByIdAndUpdate(
+    const data = await newspost.findOneAndUpdate(
       { _id: req.params.post },
       req.body,
       { new: true }
@@ -54,7 +57,7 @@ const updateNewsPost = async (req, res, next) => {
 
 const deleteNewsPost = async (req, res, next) => {
   try {
-    const data = await userDetail.findByIdAndDelete(
+    const data = await newspost.findOneAndDelete(
       { _id: req.params.post },
       req.body,
       { new: true }

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const schema = mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "authUser",
       required: true,
     },
@@ -55,7 +55,7 @@ const schema = mongoose.Schema(
       maxlength: 32,
     },
     dob: {
-      type: Date,
+      type: String,
       required: true,
     },
     photo: {

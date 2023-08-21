@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "authUser",
       required: true,
     },
@@ -15,7 +15,7 @@ const Schema = mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
+    postimg: {
       type: String,
       required: true,
     },

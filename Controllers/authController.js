@@ -8,8 +8,9 @@ const authSignup = async (req, res, next) => {
     if (!req.body.email || !req.body.password) {
       throw new badRequest("Email and Password is required");
     }
-    await authSchema.create(req.body);
-    res.status(StatusCodes.CREATED).json({ message: "User Created" });
+    const data = await authSchema.create(req.body);
+    if (!data) throw new badRequest("data not found");
+    res.status(StatusCodes.CREATED).json({ message: "user Created" });
   } catch (error) {
     next(error);
   }
@@ -19,22 +20,22 @@ const authlogin = async (req, res, next) => {
     if (!req.body.email && !req.body.password) {
       throw new badRequest("Email and Password is required");
     }
-    const User = await authSchema.findOne({ email: req.body.email });
-    if (!User) {
-      throw new badRequest("User not found");
+    const data = await authSchema.findOne({ email: req.body.email });
+    if (!data) {
+      throw new badRequest("data not found");
     }
-    const isMatch = await comparePassword(req.body.password, User.password);
+    const isMatch = await comparePassword(req.body.password, data.password);
     if (!isMatch) {
       throw new badRequest("Password is not correct");
     }
-    const token = jwtGenrator({ payload: { id: User._id, role: User.role } });
+    const token = jwtGenrator({ payload: { id: data._id, role: data.role } });
     res.cookie(
       "token",
       token,
       { httpOnly: true },
       { maxAge: 1000 * 60 * 60 * 24 }
     );
-    res.status(StatusCodes.OK).json({ message: "User Found" });
+    res.status(StatusCodes.OK).json({ message: "user Found" });
   } catch (error) {
     next(error);
   }
@@ -45,11 +46,11 @@ const authpasswordreset = async (req, res, next) => {
     if (!req.body.email && !req.body.password && !req.body.newPassword) {
       throw new badRequest("Email and Password is required");
     }
-    const User = await authSchema.findOne({ email: req.body.email });
-    if (!User) {
-      throw new badRequest("User not found");
+    const data = await authSchema.findOne({ email: req.body.email });
+    if (!data) {
+      throw new badRequest("data not found");
     }
-    const isMatch = await comparePassword(req.body.password, User.password);
+    const isMatch = await comparePassword(req.body.password, data.password);
     if (!isMatch) {
       throw new badRequest("Password is not correct");
     }
